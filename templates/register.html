@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#f3efe7;--text:#18212f;--muted:#6b7280;--accent:#df6d2d;--accent-dark:#b9531b;--line:#e7dfd4;--shadow:0 18px 45px rgba(24,33,47,0.12);}
+body{font-family:'Manrope',sans-serif;min-height:100vh;display:grid;place-items:center;color:var(--text);background:radial-gradient(circle at top left, rgba(223,109,45,0.16), transparent 24%),linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);padding:20px;}
+.card{width:min(500px,100%);padding:34px;background:rgba(255,253,248,0.92);border:1px solid rgba(231,223,212,0.85);border-radius:30px;box-shadow:var(--shadow);}
+.eyebrow{display:inline-flex;padding:8px 14px;border-radius:999px;background:rgba(223,109,45,0.12);color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:0.08em;font-weight:800;}
+h1{margin-top:18px;font-size:42px;line-height:1.05;}
+.sub{margin-top:12px;color:var(--muted);line-height:1.7;}
+.error{margin-top:18px;padding:14px 16px;background:#fff1ec;color:#a64a1f;border:1px solid #f2c4b1;border-radius:16px;font-weight:700;}
+form{margin-top:22px;}
+.field{width:100%;padding:16px;margin-bottom:14px;border-radius:16px;border:1px solid var(--line);background:#fff;font-size:15px;font-family:inherit;}
+.field:focus{outline:none;border-color:rgba(223,109,45,0.45);box-shadow:0 0 0 4px rgba(223,109,45,0.12);}
+.btn{width:100%;padding:15px;border:none;border-radius:16px;background:var(--accent);color:white;font-size:16px;font-weight:800;cursor:pointer;}
+.btn:hover{background:var(--accent-dark);}
+.link{display:block;margin-top:18px;color:var(--accent-dark);text-decoration:none;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="card">
+    <span class="eyebrow">Create Account</span>
+    <h1>Start with a better learning flow</h1>
+    <p class="sub">Create your student account to take entry tests, track scores, and move through your learning path.</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="POST" action="/register">
+        <input class="field" type="text" name="name" placeholder="Full name" required>
+        <input class="field" type="email" name="email" placeholder="Email address" required>
+        <input class="field" type="password" name="password" placeholder="Password" required>
+        <button class="btn" type="submit">Register</button>
+    </form>
+    <a class="link" href="/login">Already have an account? Login</a>
+</div>
+</body>
+</html>

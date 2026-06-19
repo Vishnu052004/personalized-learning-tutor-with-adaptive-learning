@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course_name }} Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{--bg:#f3efe7;--text:#18212f;--muted:#6b7280;--accent:#df6d2d;--accent-dark:#b9531b;--line:#e7dfd4;--shadow:0 18px 45px rgba(24,33,47,0.12);}
+        body{font-family:'Manrope',sans-serif;color:var(--text);min-height:100vh;background:radial-gradient(circle at top left, rgba(223,109,45,0.16), transparent 24%),linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);padding:30px 18px 40px;}
+        .page{max-width:1100px;margin:0 auto;}
+        .topbar{display:flex;justify-content:flex-end;margin-bottom:20px;}
+        .back-link{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:16px;text-decoration:none;font-weight:800;color:var(--text);background:rgba(255,253,248,0.92);border:1px solid var(--line);box-shadow:var(--shadow);}
+        .hero,.question-card{background:rgba(255,253,248,0.92);border:1px solid rgba(231,223,212,0.85);border-radius:28px;box-shadow:var(--shadow);}
+        .hero{padding:28px;margin-bottom:20px;}
+        .eyebrow{display:inline-flex;padding:8px 14px;border-radius:999px;background:rgba(223,109,45,0.12);color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:0.08em;font-weight:800;}
+        h1{margin-top:18px;font-size:clamp(32px,4.8vw,48px);line-height:1.05;max-width:12ch;}
+        .sub{margin-top:14px;color:var(--muted);max-width:62ch;line-height:1.7;}
+        .question-list{display:grid;gap:18px;}
+        .question-card{padding:22px;}
+        .question-number{color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:0.08em;font-weight:800;margin-bottom:10px;}
+        .question-title{font-size:24px;font-weight:800;margin-bottom:18px;line-height:1.35;}
+        .option{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;margin-bottom:10px;border-radius:18px;border:1px solid var(--line);background:#fff;cursor:pointer;transition:background 0.2s ease,border-color 0.2s ease,transform 0.2s ease;}
+        .option:hover{background:#fff8f2;border-color:rgba(223,109,45,0.35);transform:translateY(-1px);}
+        input[type="radio"]{margin-top:3px;accent-color:var(--accent);}
+        .submit-wrap{margin-top:22px;display:flex;justify-content:flex-end;}
+        .submit-btn{padding:14px 22px;border:none;border-radius:16px;background:var(--accent);color:white;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 12px 25px rgba(223,109,45,0.24);}
+        .submit-btn:hover{background:var(--accent-dark);}
+        .empty{padding:30px;text-align:center;color:var(--muted);background:rgba(255,253,248,0.92);border:1px solid rgba(231,223,212,0.85);border-radius:28px;box-shadow:var(--shadow);}
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="topbar"><a class="back-link" href="/dashboard">Back to Dashboard</a></div>
+    <div class="hero">
+        <span class="eyebrow">
+            {% if test_stage == "checkpoint" %}
+            Checkpoint Test
+            {% elif test_stage == "final" %}
+            Final Course Test
+            {% else %}
+            Course Entry Test
+            {% endif %}
+        </span>
+        <h1>{{ course_name }}</h1>
+        <p class="sub">
+            {% if test_stage == "checkpoint" %}
+            Complete this 5-question checkpoint test to unlock the next part of your learning path.
+            {% elif test_stage == "final" %}
+            Complete this 20-question final test after finishing all course videos. This test covers the full course.
+            {% else %}
+            Complete this 5-question entry test before you start the course.
+            {% endif %}
+        </p>
+    </div>
+    {% if questions %}
+    <form method="POST" action="{{ url_for('submit_test') }}">
+        <input type="hidden" name="course_id" value="{{ course_id }}">
+        <input type="hidden" name="course_name" value="{{ course_name }}">
+        <input type="hidden" name="test_stage" value="{{ test_stage }}">
+        <div class="question-list">
+            {% for q in questions %}
+            <div class="question-card">
+                <div class="question-number">Question {{ loop.index }}</div>
+                <div class="question-title">{{ q.question }}</div>
+                <label class="option"><input type="radio" name="question_{{ q.id }}" value="1" required><span>{{ q.option1 }}</span></label>
+                <label class="option"><input type="radio" name="question_{{ q.id }}" value="2"><span>{{ q.option2 }}</span></label>
+                <label class="option"><input type="radio" name="question_{{ q.id }}" value="3"><span>{{ q.option3 }}</span></label>
+                <label class="option"><input type="radio" name="question_{{ q.id }}" value="4"><span>{{ q.option4 }}</span></label>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="submit-wrap"><button type="submit" class="submit-btn">Submit Test</button></div>
+    </form>
+    {% else %}
+    <div class="empty">No questions found for this course.</div>
+    {% endif %}
+</div>
+</body>
+</html>

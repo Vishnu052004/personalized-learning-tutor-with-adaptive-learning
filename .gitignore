@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Local application data
+*.db
+*.db-journal
+
+# Local configuration
+.env
+.vscode/
+
+# Accidentally nested repository
+personalized learning tutor/
